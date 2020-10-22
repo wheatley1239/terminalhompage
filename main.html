@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <title>Startpage</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
+        <script src="jquery-ui/external/jquery/jquery.js"></script>
+        <script src="jquery-ui/jquery-ui.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Oxygen+Mono&display=swap" rel="stylesheet">
+        
+        <style type="text/css">
+        
+            body {
+
+                width: 100vw;
+                height: 100vh;
+                padding: 0px;
+                margin: 0px;
+                background: #212529;
+                font-family: 'Oxygen Mono', monospace;
+                font-size: 15px;
+
+            }
+
+            .terminal-parent {
+
+                width: 75vw;
+                height: 75vh;
+
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+            }
+
+            .terminal-container {
+
+                width: 700px;
+                height: 500px;
+                background: #343a40;
+                border-radius: 10px;
+
+                display: flex;
+                flex-direction: column;
+
+            }
+
+            .terminal-header {
+
+                width: 100%;
+                height: 25px;
+                background: #495057;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+            }
+
+            .circle {
+
+                width: 15px;
+                height: 15px;
+                border-radius: 50%;
+                margin-left: 10px;
+
+            }
+
+            .circle#red {
+
+                background: red;
+
+            }
+
+            .circle#yellow {
+
+                background: orange;
+
+            }
+
+            .circle#green {
+
+                background: green;
+
+            }
+
+            .header-text {
+
+                margin-left: auto;
+                margin-right: 10px;
+                color: white;
+
+            }
+
+            .terminal-main {
+
+                width: calc(100%);
+                height: calc(100% - 20px);
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+            }
+
+            .terminal-center {
+
+                width: calc(100% - 20px);
+                height: calc(100% - 20px);
+                margin: 0px;
+                padding: 5px;
+                color: white;
+                overflow: auto;
+
+            }
+
+            .terminal-text-startup {
+
+                margin: 0px;
+
+            }
+
+            .highlight-text-home {
+
+                color: #4cc9f0;
+
+            }
+
+            .highlight-text-tech {
+
+                color: #2A9D8F;
+
+            }
+
+            .highlight-text-school {
+
+                color: #457B9D;
+
+            }
+
+            .highlight-text-misc {
+
+                color: #F94144;
+
+            }
+
+            .inp-style {
+                
+                border: none;
+                background: none;
+                color: white;
+                font-size: 15px;
+                font-family: 'Oxygen Mono', monospace;
+                position: relative;
+                left: -2px;
+
+            }
+
+            .inp-style:focus {
+
+                outline: none;
+
+            }
+
+            .terminal-links {
+
+                color: white;
+                text-decoration: none;
+
+            }
+
+            .terminal-links:hover {
+
+                text-decoration: underline;
+
+            }
+        
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="terminal-parent">
+
+            <div class="terminal-container">
+
+                <div class="terminal-header">
+                    
+                    <div class="circle" id="red"></div>
+                    <div class="circle" id="yellow"></div>
+                    <div class="circle" id="green"></div>
+                    <p class="header-text">Terminal</p>
+            
+                </div>
+
+                <div class="terminal-main">
+
+                    <div class="terminal-center">
+
+                        <p class="terminal-text-startup">user<span class="highlight-text-home">@home</span> >  startup (type help for commands)</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+        
+            const homeText = "<p class='created'>user<span class='highlight-text-home'>@home</span> > <input type='text' class='inp-main inp-style'></p>";
+            const techText = "<p class='created'>user<span class='highlight-text-tech'>@tech</span> > <input type='text' class='inp-tech inp-style'></p>";
+            const schoolText = "<p class='created'>user<span class='highlight-text-school'>@school</span> > <input type='text' class='inp-school inp-style'></p>";
+            const miscText = "<p class='created'>user<span class='highlight-text-misc'>@misc</span> > <input type='text' class='inp-misc inp-style'></p>";
+            const commands = ["help", "get-time", "clear", "tech", "school", "misc"];
+            const techCommands = ["help", "w3schools", "bootstrap-docs", "jquery-docs", "exit"];
+            const schoolCommands = ["help", "edulink", "google-classroom", "seneca", "hegarty", "exit"];
+            const miscCommands = ["help", "youtube", "exit"];
+
+            $(function() {
+
+                $(".terminal-container").draggable({containment:".terminal-parent"});
+
+            });
+
+            $(function input() {
+
+                $(".terminal-center").append(homeText);
+                $(".inp-main").focus();
+
+            });
+
+            $(document).keypress(function detectInput(e) { // enter key event
+
+                if(e.which == 13) {
+                    
+                    let input = $(".inp-main").val();
+                    $(".inp-main").attr("disabled", true);
+                    $(".inp-main").removeClass("inp-main");
+                    
+                    switch (input) {
+
+                        case commands[0]:
+                            $(".terminal-center").append("<p class='created'><span class='highlight-text-home'>@home</span> commands: </p>" + commands);
+                            $(".terminal-center").append(homeText);
+                            $(".inp-main").focus();
+                        break;
+                        
+                        case commands[1]:
+                            let d = new Date();
+                            let minutes = d.getMinutes();
+                            if (minutes < 10) {minutes += "0"};
+                            let time = d.getHours() + ":" + d.getMinutes();
+                            let date = d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+                            $(".terminal-center").append("<p class='created'>" + time + " @ " + date + "</p>");
+                            $(".terminal-center").append(homeText);
+                            $(".inp-main").focus();
+                        break;
+
+                        case commands[2]:
+                            $(".created").remove();
+                            $(".terminal-center").append(homeText);
+                            $(".inp-main").focus();
+                        break;
+
+                        case commands[3]:
+                            $(".terminal-center").append(techText);
+                            $(".inp-tech").focus();
+                            
+                            $(document).keypress(function detectInput(e) {
+
+                                if(e.which == 13) {
+
+                                    let inputTech = $(".inp-tech").val();
+
+                                    switch (inputTech) {
+
+                                        case commands[0]:
+                                            $(".inp-tech").attr("disabled", true);
+                                            $(".inp-tech").removeClass("inp-tech");
+                                            $(".terminal-center").append("<p class='created'><span class='highlight-text-tech'>@tech</span> commands: " + techCommands + "</p>");
+                                            $(".terminal-center").append(techText);
+                                            $(".inp-tech").focus();
+                                        break;
+                                        
+                                        case techCommands[1]:
+                                            $(".inp-tech").attr("disabled", true);
+                                            $(".inp-tech").removeClass("inp-tech");
+                                            $(".terminal-center").append("<p class='created'>w3schools {<br><br><a class='terminal-links' href='https://www.w3schools.com/'>w3schools.com</a><br><br>}");
+                                            $(function input() {$(".terminal-center").append(techText);});
+                                            $(".inp-tech").focus();
+                                        break;
+
+                                        case techCommands[2]:
+                                            $(".inp-tech").attr("disabled", true);
+                                            $(".inp-tech").removeClass("inp-tech");
+                                            $(".terminal-center").append("<p class='created'>bootstrap-docs {<br><br><a class='terminal-links' href='https://getbootstrap.com/docs/4.5/layout/overview/'>getbootstrap.com</a><br><br>}");
+                                            $(function input() {$(".terminal-center").append(techText);});
+                                            $(".inp-tech").focus();
+                                        break;
+
+                                        case techCommands[3]:
+                                            $(".inp-tech").attr("disabled", true);
+                                            $(".inp-tech").removeClass("inp-tech");
+                                            $(".terminal-center").append("<p class='created'>jquery-docs {<br><br><a class='terminal-links' href='https://api.jquery.com/'>jquery.com</a><br><br>}");
+                                            $(function input() {$(".terminal-center").append(techText);});
+                                            $(".inp-tech").focus();
+                                        break;
+
+                                        case techCommands[4]:
+                                            $(".inp-tech").attr("disabled", true);
+                                            $(".inp-tech").removeClass("inp-tech");
+                                            $(function input() {$(".terminal-center").append(homeText);});
+                                            $(".inp-main").focus();
+                                        return;
+
+                                    }
+
+                                }
+
+                            });            
+                                
+                        break;
+
+                        case commands[4]:
+                            $(".terminal-center").append(schoolText);
+                            $(".inp-school").focus();
+                            
+                            $(document).keypress(function detectInput(e) {
+
+                                if(e.which == 13) {
+
+                                    let inputSchool = $(".inp-school").val();
+
+                                    switch (inputSchool) {
+
+                                        case commands[0]:
+                                            $(".inp-school").attr("disabled", true);
+                                            $(".inp-school").removeClass("inp-school");
+                                            $(".terminal-center").append("<p class='created'><span class='highlight-text-school'>@school</span> commands: " + schoolCommands + "</p>");
+                                            $(".terminal-center").append(schoolText);
+                                            $(".inp-school").focus();
+                                        break;
+                                        
+                                        case schoolCommands[1]:
+                                            $(".inp-school").attr("disabled", true);
+                                            $(".inp-school").removeClass("inp-school");
+                                            $(".terminal-center").append("<p class='created'>edulink {<br><br><a class='terminal-links' href='https://www.edulinkone.com/'>edulinkone.com</a><br><br>}");
+                                            $(function input() {$(".terminal-center").append(schoolText);});
+                                            $(".inp-school").focus();
+                                        break;
+
+                                        case schoolCommands[2]:
+                                            $(".inp-school").attr("disabled", true);
+                                            $(".inp-school").removeClass("inp-school");
+                                            $(".terminal-center").append("<p class='created'>google-classroom {<br><br><a class='terminal-links' href='https://classroom.google.com/u/1/h/'>classroom.google.com</a><br><br>}");
+                                            $(function input() {$(".terminal-center").append(schoolText);});
+                                            $(".inp-school").focus();
+                                        break;
+
+                                        case schoolCommands[3]:
+                                            $(".inp-school").attr("disabled", true);
+                                            $(".inp-school").removeClass("inp-school");
+                                            $(".terminal-center").append("<p class='created'>seneca {<br><br><a class='terminal-links' href='https://www.senecalearning.com/'>senecalearning.com</a><br><br>}");
+                                            $(function input() {$(".terminal-center").append(schoolText);});
+                                            $(".inp-school").focus();
+                                        break;
+
+                                        case schoolCommands[4]:
+                                            $(".inp-school").attr("disabled", true);
+                                            $(".inp-school").removeClass("inp-school");
+                                            $(".terminal-center").append("<p class='created'>hegarty {<br><br><a class='terminal-links' href='https://www.hegartymaths.co.uk/'>hegartymaths.co.uk</a><br><br>}");
+                                            $(function input() {$(".terminal-center").append(schoolText);});
+                                            $(".inp-school").focus();
+                                        break;
+
+                                        case schoolCommands[5]:
+                                            $(".inp-school").attr("disabled", true);
+                                            $(".inp-school").removeClass("inp-school");
+                                            $(function input() {$(".terminal-center").append(homeText);});
+                                            $(".inp-main").focus();
+                                        return;
+
+                                    }
+
+                                }
+
+                            });            
+                                
+                        break;
+
+                        case commands[5]:
+                            $(".terminal-center").append(miscText);
+                            $(".inp-misc").focus();
+                            
+                            $(document).keypress(function detectInput(e) {
+
+                                if(e.which == 13) {
+
+                                    let inputMisc = $(".inp-misc").val();
+
+                                    switch (inputMisc) {
+
+                                        case commands[0]:
+                                            $(".inp-misc").attr("disabled", true);
+                                            $(".inp-misc").removeClass("inp-misc");
+                                            $(".terminal-center").append("<p class='created'><span class='highlight-text-misc'>@misc</span> commands: " + miscCommands + "</p>");
+                                            $(".terminal-center").append(miscText);
+                                            $(".inp-misc").focus();
+                                        break;
+                                        
+                                        case miscCommands[1]:
+                                            $(".inp-misc").attr("disabled", true);
+                                            $(".inp-misc").removeClass("inp-misc");
+                                            $(".terminal-center").append("<p class='created'>youtube {<br><br><a class='terminal-links' href='https://www.youtube.com/'>youtube.com</a><br><br>}");
+                                            $(function input() {$(".terminal-center").append(miscText);});
+                                            $(".inp-misc").focus();
+                                        break;
+
+                                        case miscCommands[2]:
+                                            $(".inp-misc").attr("disabled", true);
+                                            $(".inp-misc").removeClass("inp-misc");
+                                            $(function input() {$(".terminal-center").append(homeText);});
+                                            $(".inp-main").focus();
+                                        return;
+
+                                    }
+
+                                }
+
+                            });            
+                                
+                        break;
+
+                    }
+                
+                }
+
+            });
+        
+        </script>
+    
+    </body>
+
+</html>
